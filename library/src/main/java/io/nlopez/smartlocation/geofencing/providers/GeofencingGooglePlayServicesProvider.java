@@ -198,7 +198,7 @@ public class GeofencingGooglePlayServicesProvider implements GeofencingProvider,
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         logger.d("onConnectionFailed");
         if (googlePlayServicesListener != null) {
             googlePlayServicesListener.onConnectionFailed(connectionResult);
@@ -236,7 +236,7 @@ public class GeofencingGooglePlayServicesProvider implements GeofencingProvider,
         @Override
         protected void onHandleIntent(Intent intent) {
             GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-            if (!geofencingEvent.hasError()) {
+            if (geofencingEvent != null && !geofencingEvent.hasError()) {
                 int transition = geofencingEvent.getGeofenceTransition();
 
                 // Broadcast an intent containing the geofencing info
@@ -254,7 +254,7 @@ public class GeofencingGooglePlayServicesProvider implements GeofencingProvider,
     }
 
     @Override
-    public void onResult(Status status) {
+    public void onResult(@NonNull Status status) {
         if (status.isSuccess()) {
             logger.d("Geofencing update request successful");
         } else if (status.hasResolution() && context instanceof Activity) {
